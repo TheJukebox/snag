@@ -1,2 +1,97 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import { Download } from 'lucide-svelte';
+	import sausage from '$lib/assets/sausage.png';
+	import { fade } from 'svelte/transition';
+
+	let url: string = '';
+	let format: string = 'mp4';
+	let error: boolean = false;
+	let downloading: boolean = false;
+
+	let index = 0;
+	const sites = [
+		"youtube",
+		"vimeo",
+		"reddit",
+		"twitter",
+		"twitch",
+	];
+	const colors = [
+		"text-red-500",
+		"text-blue-600",
+		"text-orange-600",
+		"text-sky-400",
+		"text-purple-900",
+	];
+
+	async function handleDownload() {
+		console.log(`Downloading ${url} as ${format}...`);
+		downloading = true;
+
+		const res = await fetch('/api/download', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ url, format }),
+		});
+
+		if (!res.ok) {
+			console.error("Invalid URL.");
+			return;
+		}
+
+		const blob = await res.blob();
+		const disposition = res.headers.get('Content-Disposition');
+		const filename = disposition?.match(/filename="?(.+)"?/)?.[1] || 'download';
+		const a = document.createElement('a');
+		a.href = URL.createObjectURL(blob);
+		a.download = filename;
+		a.click();
+		URL.revokeObjectURL(a.href);
+		downloading = false;
+	}
+
+	setInterval(() => {
+		index = (index + 1) % sites.length;
+	}, 2000);
+</script>
+
+<div class="flex flex-col items-center">
+	<img class="w-50 p-5" src="{sausage}"/>
+	<h1 class="text-xl">snag</h1>
+	<form>
+		<button type="submit" on:click={handleDownload}></button>
+		<div class="text-slate-400 flex w-200 h-10 relative">
+			<input
+				disabled={downloading}
+				bind:value={url}
+				type="text" 
+				class="disabled:animate-pulse disabled:bg-emerald-950 relative w-full border-slate-800 bg-transparent rounded-full focus:ring-slate-600 focus:ring-2 active:outline-none transition"
+				placeholder="enter a url and slap enter"
+			/>
+			<select bind:value={format} class="bg-transparent rounded-full scale-75 focus:ring-0 border-slate-800 focus:border-slate-600 transition active:outline-none absolute right-0">
+				<option value="aac">aac</option>
+				<option value="mkv">mkv</option>
+				<option value="mp4">mp4</option>
+				<option value="mp3">mp3</option>
+				<option value="webm">webm</option>
+			</select>
+		</div>
+	</form>
+	<div>
+		{#if downloading }
+			<p class="m-10">downloading your thingy, mate, give us a tick...</p>
+		{:else}
+			<p class="m-10">
+				enter a 
+				<span class="relative inline-block w-[7.5ch]">
+				{#key index}
+					<span in:fade={{ duration: 400 }} out:fade={{ duration: 100 }} class="{colors[index]} absolute inline-block top-0 left-0.5 translate-y-[-1.05em]">
+						{sites[index]}
+					</span>
+				{/key}
+				</span>
+				URL and press enter to yoink it
+			</p>
+		{/if}
+	</div>
+</div>
