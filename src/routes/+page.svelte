@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 
 	let url: string = '';
-	let format: string = 'mp4';
+	let format: string = 'webm';
 	let error: boolean = false;
 	let downloading: boolean = false;
 
@@ -68,24 +68,24 @@
 				class="disabled:animate-pulse disabled:bg-emerald-950 relative w-full border-slate-800 bg-transparent rounded-full focus:ring-slate-600 focus:ring-2 active:outline-none transition"
 				placeholder="enter a url and slap enter"
 			/>
-			<select bind:value={format} class="bg-transparent rounded-full scale-75 focus:ring-0 border-slate-800 focus:border-slate-600 transition active:outline-none absolute right-0">
+			<select bind:value={format} class="bg-transparent rounded-full scale-80 focus:ring-0 border-slate-800 focus:border-slate-600 transition active:outline-none absolute right-0">
+				<option value="webm">webm</option>
 				<option value="aac">aac</option>
 				<option value="mkv">mkv</option>
 				<option value="mp4">mp4</option>
 				<option value="mp3">mp3</option>
-				<option value="webm">webm</option>
 			</select>
 		</div>
 	</form>
 	<div>
 		{#if downloading }
-			<p class="m-10">downloading your thingy, mate, give us a tick...</p>
+			<p class="m-10 animate-pulse">downloading your thingy, mate. give us a tick...</p>
 		{:else}
 			<p class="m-10">
 				enter a 
 				<span class="relative inline-block w-[7.5ch]">
 				{#key index}
-					<span in:fade={{ duration: 400 }} out:fade={{ duration: 100 }} class="{colors[index]} absolute inline-block top-0 left-0.5 translate-y-[-1.05em]">
+					<span in:fade={{ duration: 400 }} out:fade={{ duration: 100 }} class="{colors[index]} absolute inline-block text-lg top-0 left-0.1 translate-y-[-1.05em]">
 						{sites[index]}
 					</span>
 				{/key}
