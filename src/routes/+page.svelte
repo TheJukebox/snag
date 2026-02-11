@@ -60,7 +60,7 @@
 	<h1 class="text-xl">snag</h1>
 	<form>
 		<button type="submit" on:click={handleDownload}></button>
-		<div class="text-slate-400 flex w-200 h-10 relative">
+		<div class="text-slate-400 flex lg:w-200 w-100 h-10 relative">
 			<input
 				disabled={downloading}
 				bind:value={url}
