@@ -63,7 +63,7 @@
 	<h1 class="text-xl">snag</h1>
 	<form>
 		<button type="submit" on:click={handleDownload}></button>
-		<div class="text-slate-400 flex lg:w-200 w-90 h-10 relative">
+		<div class="text-slate-400 flex lg:w-200 w-90 h-13 relative">
 			<input
 				disabled={downloading}
 				bind:value={url}
@@ -71,7 +71,7 @@
 				class="disabled:animate-pulse disabled:bg-emerald-950 relative w-full border-slate-800 bg-transparent rounded-full focus:ring-slate-600 focus:ring-2 active:outline-none transition"
 				placeholder="enter a url and slap enter"
 			/>
-			<select bind:value={format} class="bg-transparent rounded-full scale-80 focus:ring-0 border-slate-800 focus:border-slate-600 transition active:outline-none absolute right-0">
+			<select bind:value={format} class="bg-transparent h-10 rounded-full focus:ring-0 border-slate-800 focus:border-slate-600 transition active:outline-none absolute right-1 top-1.5">
 				<option value="webm">webm</option>
 				<option value="aac">aac</option>
 				<option value="mkv">mkv</option>
