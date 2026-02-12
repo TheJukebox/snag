@@ -86,7 +86,7 @@ export async function POST({ request, getClientAddress }) {
     console.log(`[${client} | ${tempId}] Saved video to '${tempFile}'`);
 
     console.log(`[${client} | ${tempId}] Serving ${tempFile} as ${filename}...`);
-    const fileStream = fs.createReadStream(tempFile);
+    const fileStream: fs.ReadStream = fs.createReadStream(tempFile);
     fileStream.on('close', () => {
       console.log(`[${client} | ${tempId}] Finished serving!`);
       fs.unlink(tempFile, () => {});
