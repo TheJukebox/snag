@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Download } from 'lucide-svelte';
+	import { Download, Loader } from 'lucide-svelte';
 	import sausage from '$lib/assets/sausage.png';
 	import { fade } from 'svelte/transition';
 
@@ -23,6 +23,13 @@
 		"text-orange-600",
 		"text-sky-400",
 		"text-purple-900",
+	];
+	const adjust = [
+		"left-0",
+		"left-2.5",
+		"left-2.5",
+		"left-1",
+		"left-1",
 	];
 
 	async function handleDownload() {
@@ -84,18 +91,19 @@
 			</select>
 		</div>
 	</form>
-	<div>
+	<div class="flex flex-col items-center justify-center text-center p-10 text-lg">
 		{#if invalidUrl }
 			<p class="m-5 text-center text-red-500 text-xl">invalid url!</p>
 		{/if}
 		{#if downloading }
+			<Loader class="motion-safe:animate-spin animate-pulse text-emerald-400" size={48} />
 			<p class="m-10 animate-pulse">downloading your thingy, mate. give us a tick...</p>
 		{:else}
 			<p class="m-10">
 				enter a 
 				<span class="relative inline-block w-[7.5ch]">
 				{#key index}
-					<span in:fade={{ duration: 400 }} out:fade={{ duration: 100 }} class="{colors[index]} absolute inline-block text-lg top-0 left-0.1 translate-y-[-1.05em]">
+					<span in:fade={{ duration: 400 }} out:fade={{ duration: 100 }} class="{colors[index]} absolute inline-block text-lg top-0 {adjust[index]} translate-y-[-1.05em]">
 						{sites[index]}
 					</span>
 				{/key}
