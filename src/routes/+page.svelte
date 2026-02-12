@@ -7,6 +7,7 @@
 	let format: string = 'webm';
 	let error: boolean = false;
 	let downloading: boolean = false;
+	let invalidUrl: boolean = false;
 
 	let index = 0;
 	const sites = [
@@ -34,6 +35,7 @@
 	async function handleDownload() {
 		console.log(`Downloading ${url} as ${format}...`);
 		downloading = true;
+		invalidUrl = false;
 
 		const res = await fetch('/api/download', {
 			method: 'POST',
@@ -43,6 +45,8 @@
 
 		if (!res.ok) {
 			console.error("Invalid URL.");
+			downloading = false;
+			invalidUrl = true;
 			return;
 		}
 
@@ -87,7 +91,10 @@
 			</select>
 		</div>
 	</form>
-	<div class="flex flex-col items-center jutify-center text-center p-10 text-lg">
+	<div class="flex flex-col items-center justify-center text-center p-10 text-lg">
+		{#if invalidUrl }
+			<p class="m-5 text-center text-red-500 text-xl">invalid url!</p>
+		{/if}
 		{#if downloading }
 			<Loader class="motion-safe:animate-spin animate-pulse text-emerald-400" size={48} />
 			<p class="m-10 animate-pulse">downloading your thingy, mate. give us a tick...</p>
