@@ -42,6 +42,6 @@ jobs:
 
     - name: Push image
       run: |
-        docker push ghcr.io/TheJukebox/snag:${{ steps.versioning.outputs.semVer }}
-        docker push ghcr.io/TheJukebox/snag:latest
+        docker push ghcr.io/thejukebox/snag:${{ steps.versioning.outputs.semVer }}
+        docker push ghcr.io/thejukebox/snag:latest
 
