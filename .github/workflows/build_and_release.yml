@@ -30,8 +30,8 @@ jobs:
 
     - name: Build image
       run: |
-        docker build . -f Dockerfile -t ghcr.io/TheJukebox/snag:${{ steps.versioning.outputs.semVer }}
-        docker build . -f Dockerfile -t ghcr.io/TheJukebox/snag:latest
+        docker build . -f Dockerfile -t ghcr.io/thejukebox/snag:${{ steps.versioning.outputs.semVer }}
+        docker build . -f Dockerfile -t ghcr.io/thejukebox/snag:latest
 
     - name: Login to container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
