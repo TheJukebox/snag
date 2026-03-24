@@ -1,0 +1,47 @@
+name: Build and release
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v4.4.2
+      with:
+        versionSpec: '6.6.x'
+        preferLatestVersion: true
+
+    - name: Determine version
+      id: versioning
+      uses: gittools/actions/gitversion/execute@v4.4.2
+
+    - name: Build image
+      run: |
+        docker build . -f Dockerfile -t ghcr.io/TheJukebox/snag:${{ steps.versioning.outputs.semVer }}
+        docker build . -f Dockerfile -t ghcr.io/TheJukebox/snag:latest
+
+    - name: Login to container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push image
+      run: |
+        docker push ghcr.io/TheJukebox/snag:${{ steps.versioning.outputs.semVer }}
+        docker push ghcr.io/TheJukebox/snag:latest
+
